@@ -1,0 +1,10 @@
+name: Run Python Tests
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Test
+        uses: github-suraj/python-samples@main
