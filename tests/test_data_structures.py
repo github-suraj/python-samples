@@ -1,6 +1,8 @@
+import pytest
 from data_structures.stack import Stack
 from data_structures.queue import Queue
 from data_structures.graph import Graph
+from data_structures.linked_list import LinkedList
 
 def test_stack(capsys):
     s = Stack()
@@ -95,3 +97,62 @@ def test_graph(capsys):
     edges = g.getEdges()
     for edge in edges:
         assert (edge in data) == True, "Test Failed"
+
+def test_linked_list(capsys):
+    ll = LinkedList()
+    assert ll.isEmpty() == True, "Test Failed"
+    assert len(ll) == 0, "Test Failed"
+    assert ll.getElements() == [], "Test Failed"
+    print(ll)
+    assert capsys.readouterr().out.rstrip() == f"LinkedList([])", "Test Failed"
+    with pytest.raises(IndexError) as err:
+        ll.pop()
+        assert err.exception == "Popping an emply list", "Test Failed"
+    with pytest.raises(IndexError) as err:
+        ll.popleft()
+        assert err.exception == "Popping an emply list", "Test Failed"
+    with pytest.raises(ValueError) as err:
+        ll.remove(5)
+        assert err.exception == "5 not in the list", "Test Failed"
+
+    data = list(range(1, 5))
+    ll = LinkedList(data)
+    assert ll.isEmpty() == False, "Test Failed"
+    assert len(ll) == 4, "Test Failed"
+    assert ll.getElements() == data, "Test Failed"
+    print(ll)
+    assert capsys.readouterr().out.rstrip() == f"LinkedList({[1, 2, 3, 4]})", "Test Failed"
+    ll.extendleft(data)
+    assert len(ll) == 8, "Test Failed"
+    print(ll)
+    assert capsys.readouterr().out.rstrip() == f"LinkedList({[4, 3, 2, 1, 1, 2, 3, 4]})", "Test Failed"
+    assert ll.pop() == 4, "Test Failed"
+    assert ll.popleft() == 4, "Test Failed"
+    assert ll.getElements() == [3, 2, 1, 1, 2, 3], "Test Failed"
+    with pytest.raises(IndexError) as err:
+        ll.insert(6, -1)
+        assert err.exception == "Index out of range", "Test Failed"
+    ll.insert(0, 4)
+    assert ll.getElements() == [4, 3, 2, 1, 1, 2, 3], "Test Failed"
+    with pytest.raises(ValueError) as err:
+        ll.insert_after_value(5, 6)
+        assert err.exception == "5 not in the list", "Test Failed"
+    ll.append(5)
+    assert ll.getElements() == [4, 3, 2, 1, 1, 2, 3, 5], "Test Failed"
+    ll.insert_after_value(5, 6)
+    assert len(ll) == 9, "Test Failed"
+    print(ll)
+    assert capsys.readouterr().out.rstrip() == f"LinkedList({[4, 3, 2, 1, 1, 2, 3, 5, 6]})", "Test Failed"
+    ll.remove(2)
+    assert len(ll) == 8, "Test Failed"
+    assert ll.getElements() == [4, 3, 1, 1, 2, 3, 5, 6], "Test Failed"
+    with pytest.raises(ValueError) as err:
+        ll.remove(7)
+        assert err.exception == "7 not in the list", "Test Failed"
+    ll.remove_at_index(5)
+    assert len(ll) == 7, "Test Failed"
+    print(ll)
+    assert capsys.readouterr().out.rstrip() == f"LinkedList({[4, 3, 1, 1, 2, 5, 6]})", "Test Failed"
+    with pytest.raises(IndexError) as err:
+        ll.remove_at_index(7)
+        assert err.exception == "Index out of range", "Test Failed"
