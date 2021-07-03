@@ -4,6 +4,8 @@ from data_structures.queue import Queue
 from data_structures.graph import Graph
 from data_structures.linked_list import LinkedList
 from data_structures.hash_table import HashTable
+from data_structures.general_tree import Tree
+from data_structures.binary_search_tree import BinarySearchTree
 
 def test_stack(capsys):
     s = Stack()
@@ -182,3 +184,44 @@ def test_hash_table(capsys):
         assert len(ht) == 11 - idx, "Test Failed"
     assert ht.isEmpty() == True, "Test Failed"
     assert len(ht) == 0, "Test Failed"
+
+def test_general_tree(capsys):
+    car = Tree('Car')
+    car.add_child(Tree('Audi'))
+    car.add_child(Tree('BMW'))
+
+    bike = Tree('Bike')
+    bike.add_child(Tree('Bullet'))
+    bike.add_child(Tree('Rajdoot'))
+
+    root = Tree('Vehical')
+    root.add_child(car)
+    root.add_child(bike)
+    root.print_tree()
+    expected = ['Vehical', '   |--Car', '      |--Audi', '      |--BMW', '   |--Bike', '      |--Bullet', '      |--Rajdoot']
+    assert capsys.readouterr().out.splitlines() == expected, "Test Failed"
+
+def test_binary_search_tree(capsys):
+    arr = [3, 1, 2, 0, 5, 6, 4]
+    root = BinarySearchTree(arr[0])
+    assert len(root) == 1, "Test Failed"
+    for idx, ele in enumerate(arr[1:], start=1):
+        root.insert(ele)
+        assert len(root) == idx + 1, "Test Failed"
+    print(root)
+    assert capsys.readouterr().out.rstrip() == 'BinarySearchTree([0, 1, 2, 3, 4, 5, 6])', "Test Failed"
+    assert root.isEmpty() == False, "Test Failed"
+    assert root.inorderTree() == [0, 1, 2, 3, 4, 5, 6], "Test Failed"
+    assert root.preorderTree() == [3, 1, 0, 2, 5, 4, 6], "Test Failed"
+    assert root.postorderTree() == [0, 2, 1, 4, 6, 5, 3], "Test Failed"
+    assert root.findMin() == 0, "Test Failed"
+    assert root.findMax() == 6, "Test Failed"
+    assert root.treeSum() == 21, "Test Failed"
+    assert root.search(6) == True, "Test Failed"
+    assert root.search(8) == False, "Test Failed"
+    for i in range(7):
+        root = root.delete(i)
+        if root:
+            print(root)
+            assert root.inorderTree() == sorted(arr)[i+1:], "Test Failed"
+            assert len(root) == len(arr) - i - 1, "Test Failed"
