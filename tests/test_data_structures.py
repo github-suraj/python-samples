@@ -3,6 +3,9 @@ from data_structures.stack import Stack
 from data_structures.queue import Queue
 from data_structures.graph import Graph
 from data_structures.linked_list import LinkedList
+from data_structures.hash_table import HashTable
+from data_structures.general_tree import Tree
+from data_structures.binary_search_tree import BinarySearchTree
 
 def test_stack(capsys):
     s = Stack()
@@ -156,3 +159,28 @@ def test_linked_list(capsys):
     with pytest.raises(IndexError) as err:
         ll.remove_at_index(7)
         assert err.exception == "Index out of range", "Test Failed"
+
+def test_hash_table(capsys):
+    data = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    ht = HashTable()
+    assert ht.isEmpty() == True, "Test Failed"
+    assert len(ht) == 0, "Test Failed"
+    ht['Jan'] = 1
+    print(ht)
+    assert capsys.readouterr().out.rstrip() == f"HashTable([('Jan', 1)])", "Test Failed"
+    for idx, month in enumerate(data[1:], start=2):
+        ht[month] = idx
+    assert ht.isEmpty() == False, "Test Failed"
+    assert sorted(ht.values()) == list(range(1, 13)), "Test Failed"
+    assert sorted(ht.keys()) == sorted(data), "Test Failed"
+    assert dict(ht.items()) == dict([(month, idx) for idx, month in enumerate(data, start=1)]), "Test Failed"
+    assert len(ht) == 12, "Test Failed"
+    assert ht['May'] == 5, "Test Failed"
+    del ht['Dec']
+    assert dict(ht.items()) == dict([(month, idx) for idx, month in enumerate(data[:-1], start=1)]), "Test Failed"
+    assert len(ht) == 11, "Test Failed"
+    for idx, month in enumerate(data[:-1], start=1):
+        del ht[month]
+        assert len(ht) == 11 - idx, "Test Failed"
+    assert ht.isEmpty() == True, "Test Failed"
+    assert len(ht) == 0, "Test Failed"

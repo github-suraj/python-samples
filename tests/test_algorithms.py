@@ -46,5 +46,4 @@ def test_sorting():
 def test_tower_of_hanoi(capsys):
     expected = ['Moving disk 1 from A to C', 'Moving disk 2 from A to B', 'Moving disk 1 from C to B','Moving disk 3 from A to C', 'Moving disk 1 from B to A', 'Moving disk 2 from B to C', 'Moving disk 1 from A to C']
     tower_of_hanoi(3, 'A', 'C', 'B')
-    cap = capsys.readouterr()
-    assert cap.out.splitlines() == expected
+    assert capsys.readouterr().out.splitlines() == expected, "Test Failed"
