@@ -4,8 +4,6 @@ from data_structures.queue import Queue
 from data_structures.graph import Graph
 from data_structures.linked_list import LinkedList
 from data_structures.hash_table import HashTable
-from data_structures.general_tree import Tree
-from data_structures.binary_search_tree import BinarySearchTree
 
 def test_stack(capsys):
     s = Stack()
